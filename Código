@@ -1,0 +1,58 @@
+#include <Servo.h>
+
+Servo myservo[7];
+
+int setSeg[7];
+
+int segmentOn[7] =  {90,90,90,90,00,00,90};
+int segmentOff[7] = {00,00,00,0,90,90,00};
+int digits[16][7] = {{1,1,1,1,1,1,0},{0,1,1,0,0,0,0},{1,1,0,1,1,0,1},{1,1,1,1,0,0,1},{0,1,1,0,0,1,1},{1,0,1,1,0,1,1},{1,0,1,1,1,1,1},{1,1,1,0,0,1,0},{1,1,1,1,1,1,1},{1,1,1,1,0,1,1},{1,1,1,0,1,1,1},{0,0,1,1,1,1,1},{1,0,0,1,1,1,0},{0,1,1,1,1,0,1},{1,0,0,1,1,1,1},{1,0,0,0,1,1,1}};
+
+void setup()
+{
+  myservo[0].attach(2);
+  myservo[1].attach(3);
+  myservo[2].attach(4);
+  myservo[3].attach(5);
+  myservo[4].attach(6);
+  myservo[5].attach(7);
+  myservo[6].attach(8);
+  
+  setSeg[0] = A0;
+  setSeg[1] = A1;
+  setSeg[2] = A2;
+  setSeg[3] = A3;
+  setSeg[4] = A4;
+  setSeg[5] = A5;
+  setSeg[6] = 9;
+  
+  for(int i=0 ; i<7 ; i++)
+  {
+    myservo[i].write(segmentOff[i]);
+    pinMode(setSeg[i],OUTPUT);
+  }
+  pinMode(13,OUTPUT);
+  digitalWrite(13,HIGH);
+  
+  delay(4000);
+   digitalWrite(13,LOW);
+}
+
+void loop() 
+{
+    for (int i=0 ; i<16 ; i++)
+    {
+      for (int j=6 ; j>=0 ; j--)
+      {
+        digitalWrite(setSeg[j],digits[i][j]);
+        
+        if(digits[i][j]==1)
+          myservo[j].write(segmentOn[j]);
+        else
+          myservo[j].write(segmentOff[j]);
+      }
+      delay(2000);
+    }
+  delay (5000);
+  
+}
